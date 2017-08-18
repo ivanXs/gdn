@@ -43,9 +43,9 @@ def loop():
 def pokreni_punjenje():
     """
     Pokretanje faze punjenja
-    Vraca True ako je ciklus ispravno avrsen
-    Vraca False ako ciklus nije ispravno zavrsen
     :return:
+	Vraca True ako je ciklus ispravno avrsen
+    Vraca False ako ciklus nije ispravno zavrsen
     """
     print('Pokrecem punjenje...')
     GPIO.output(LedPin, GPIO.LOW)  # led on
