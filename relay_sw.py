@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 
 LedPin = 11      # pin11 --- Control Led Indicator
 RelayPin = 12    # pin12 --- Relay module x1
-BtnPin = 13      # pin12 --- float Sensor Switch
+BtnPin = 13      # pin13 --- float Sensor Switch
 
 
 def setup():
