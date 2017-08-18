@@ -1,9 +1,9 @@
-#import RPi.GPIO as GPIO #Use for Raspberry Pi GPIO
-import testRPiGPIO as GPIO #Use for Debugging GPIO
+# import RPi.GPIO as GPIO #Use for Raspberry Pi GPIO
+import testRPiGPIO as GPIO  # Use for Debugging GPIO
 
-LedPin = 11      # pin11 --- Control Led Indicator
-RelayPin = 12    # pin12 --- Relay module x1
-BtnPin = 13      # pin13 --- float Sensor Switch
+LedPin = 11  # pin11 --- Control Led Indicator
+RelayPin = 12  # pin12 --- Relay module x1
+BtnPin = 13  # pin13 --- float Sensor Switch
 
 
 def setup():
@@ -20,7 +20,7 @@ def loop():
     while True:
         if GPIO.input(BtnPin) == GPIO.HIGH:  # Check level sw.
             if pokreni_punjenje():
-                print ('SYS OK')
+                print('SYS OK')
 
 
 """
@@ -38,35 +38,34 @@ def loop():
 
 
 def pokreni_punjenje():
-    print ('Pokrecem punjenje...')
+    print('Pokrecem punjenje...')
     GPIO.output(LedPin, GPIO.LOW)  # led on
-    GPIO.output(RelayPin, GPIO.LOW)# rel on
-    if (status_punjenja()):
-        print ('...Signal punjenja prisutan')
+    GPIO.output(RelayPin, GPIO.LOW)  # rel on
+    if status_punjenja():
+        print('...Signal punjenja prisutan')
         try:
-            while (GPIO.input(BtnPin) == GPIO.HIGH):
-                print ('...Punim')
-            if (zavrsi_punjenje()):
-                print ('Ciklus punjenja zavrsen')
+            while GPIO.input(BtnPin) == GPIO.HIGH:
+                print('...Punim')
+            if zavrsi_punjenje():
+                print('Ciklus punjenja zavrsen')
                 return True
             else:
-                print ('Greska kod Ciklusa punjenja')
+                print('Greska kod Ciklusa punjenja')
                 return False
         except:
-            print ("Greska u kodu kod pracenja i zavrsetka punjenja")
+            print("Greska u kodu kod pracenja i zavrsetka punjenja")
             destroy()
     else:
-        print ('Pokretanje punjenja nije uspjelo')
+        print('Pokretanje punjenja nije uspjelo')
         destroy()
 
 
-
 def zavrsi_punjenje():
-    print ('Punjenje zavrseno, zatvaram ventil...')
+    print('Punjenje zavrseno, zatvaram ventil...')
     GPIO.output(LedPin, GPIO.LOW)  # led on
     GPIO.output(RelayPin, GPIO.LOW)  # rel on
     if not (status_punjenja()):
-        print ('Signal zatvaranja predan')
+        print('Signal zatvaranja predan')
         return True
     else:
         return False
@@ -74,13 +73,13 @@ def zavrsi_punjenje():
 
 def status_punjenja():
     try:
-        if (GPIO.input(12)== True):
+        if (GPIO.input(12) == True):
             return True
         else:
             return False
     except:
-        print ("Pogreska kod statusa punjenja")
-        print ("Provjeri kod !!")
+        print("Pogreska kod statusa punjenja")
+        print("Provjeri kod !!")
         destroy()
 
 
