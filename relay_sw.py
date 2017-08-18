@@ -1,17 +1,17 @@
 # import RPi.GPIO as GPIO #Use for Raspberry Pi GPIO
 import testRPiGPIO as GPIO  # Use for Debugging GPIO
 
-LedPin = 11  # pin11 --- Control Led Indicator
+LedPin = 11    # pin11 --- Control Led Indicator
 RelayPin = 12  # pin12 --- Relay module x1
-BtnPin = 13  # pin13 --- float Sensor Switch
+BtnPin = 13    # pin13 --- float Sensor Switch
 
 
 def setup():
-    GPIO.setmode(GPIO.BOARD)  # Numbers pins by physical location
-    GPIO.setup(RelayPin, GPIO.OUT)  # Set pin mode as output
-    GPIO.output(RelayPin, GPIO.HIGH)
-    GPIO.setup(LedPin, GPIO.OUT)
-    GPIO.output(LedPin, GPIO.HIGH)  # Set LedPin high(+3.3V) to make led off
+    GPIO.setmode(GPIO.BOARD)          # Numbers pins by physical location
+    GPIO.setup(RelayPin, GPIO.OUT)    # Set pin mode as output
+    GPIO.output(RelayPin, GPIO.LOW)   # relay off
+    GPIO.setup(LedPin, GPIO.OUT)      # Set pin mode as output
+    GPIO.output(LedPin, GPIO.HIGH)    # Set LedPin high(+3.3V) to make led off
     GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Set BtnPin's mode is input, and pull up to high level(3.3V)
 
 
@@ -21,6 +21,9 @@ def loop():
         if GPIO.input(BtnPin) == GPIO.HIGH:  # Check level sw.
             if pokreni_punjenje():
                 print('SYS OK')
+            else:
+                print('SYS NOT OK')
+                destroy()
 
 
 """
@@ -38,9 +41,15 @@ def loop():
 
 
 def pokreni_punjenje():
+    """
+    Pokretanje faze punjenja
+    Vraca True ako je ciklus ispravno avrsen
+    Vraca False ako ciklus nije ispravno zavrsen
+    :return:
+    """
     print('Pokrecem punjenje...')
     GPIO.output(LedPin, GPIO.LOW)  # led on
-    GPIO.output(RelayPin, GPIO.LOW)  # rel on
+    GPIO.output(RelayPin, GPIO.HIGH)  # rel on
     if status_punjenja():
         print('...Signal punjenja prisutan')
         try:
@@ -57,13 +66,13 @@ def pokreni_punjenje():
             destroy()
     else:
         print('Pokretanje punjenja nije uspjelo')
-        destroy()
+        return False
 
 
 def zavrsi_punjenje():
     print('Punjenje zavrseno, zatvaram ventil...')
-    GPIO.output(LedPin, GPIO.LOW)  # led on
-    GPIO.output(RelayPin, GPIO.LOW)  # rel on
+    GPIO.output(LedPin, GPIO.HIGH)  # led off
+    GPIO.output(RelayPin, GPIO.LOW)  # rel off
     if not (status_punjenja()):
         print('Signal zatvaranja predan')
         return True
