@@ -1,4 +1,5 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO #Use for Raspberry Pi GPIO
+import testRPiGPIO as GPIO #Use for Debugging GPIO
 
 LedPin = 11      # pin11 --- Control Led Indicator
 RelayPin = 12    # pin12 --- Relay module x1
