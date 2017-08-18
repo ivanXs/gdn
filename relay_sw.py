@@ -19,7 +19,7 @@ def loop():
     #   count = 1
     while True:
         if GPIO.input(BtnPin) == GPIO.HIGH:  # Check level sw.
-            if (pokreni_punjenje()):
+            if pokreni_punjenje():
                 print ('SYS OK')
 
 
